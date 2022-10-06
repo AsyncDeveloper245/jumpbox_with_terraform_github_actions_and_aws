@@ -97,7 +97,7 @@ resource "aws_route_table_association" "devcPublicAssociation" {
 # }
 resource "aws_key_pair" "devc_auth" {
   key_name   = "devc_auth"
-  public_key = file("~/.ssh/devc.pub")
+  public_key = file("devc.pub")
 }
 
 resource "aws_instance" "private_instance" {
@@ -119,18 +119,18 @@ resource "aws_instance" "public_instance" {
   vpc_security_group_ids      = [aws_security_group.public_sg.id]
   associate_public_ip_address = true
   #user_data = templatefile("copy.sh",{KEY="~/.ssh/devc"})
-  provisioner "file" {
-    source      = "jumpbox.pem"
-    destination = "/tmp/jumpbox.pem"
+  # provisioner "file" {
+  #   source      = "jumpbox.pem"
+  #   destination = "/tmp/jumpbox.pem"
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = aws_instance.public_instance.public_ip
-      private_key = file("~/.ssh/devc")
-    }
+  #   connection {
+  #     type        = "ssh"
+  #     user        = "ubuntu"
+  #     host        = aws_instance.public_instance.public_ip
+  #     private_key = file("devc.pem")
+  #   }
   }
-}
+
 
 
 
