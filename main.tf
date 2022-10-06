@@ -97,7 +97,7 @@ resource "aws_route_table_association" "devcPublicAssociation" {
 # }
 resource "aws_key_pair" "devc_auth" {
   key_name   = "devc_auth"
-  public_key = file("./devc.pub")
+  public_key = file("./devc.txt")
 }
 
 resource "aws_instance" "private_instance" {
