@@ -38,8 +38,8 @@ resource "aws_internet_gateway" "devc_igw" {
 
 
 resource "aws_subnet" "devc_public_subnet" {
-  vpc_id     = aws_vpc.devcloud.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.devcloud.id
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 
   tags = {
@@ -73,7 +73,7 @@ resource "aws_route_table" "default_rtb" {
 
 resource "aws_route" "publicRoute" {
   route_table_id         = aws_route_table.default_rtb.id
-  destination_cidr_block = "129.205.124.229/32"
+  destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.devc_igw.id
 }
 
@@ -101,24 +101,38 @@ resource "aws_key_pair" "devc_auth" {
 }
 
 resource "aws_instance" "private_instance" {
-  ami           = data.aws_ami.devc_data_source.id
-  instance_type = "t2.micro"
-  subnet_id = aws_subnet.devc_private_subnet.id
-  vpc_security_group_ids = [aws_security_group.private_sg.id]
+  ami                         = data.aws_ami.devc_data_source.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.devc_private_subnet.id
+  vpc_security_group_ids      = [aws_security_group.private_sg.id]
   associate_public_ip_address = false
-  key_name      = aws_key_pair.devc_auth.id
-  
+  key_name                    = "jumpbox"
+
 
 }
 
 resource "aws_instance" "public_instance" {
-  ami           = data.aws_ami.devc_data_source.id
-  instance_type = "t2.micro"
-  subnet_id = aws_subnet.devc_public_subnet.id
-  key_name      = aws_key_pair.devc_auth.id
-  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  ami                         = data.aws_ami.devc_data_source.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.devc_public_subnet.id
+  key_name                    = aws_key_pair.devc_auth.id
+  vpc_security_group_ids      = [aws_security_group.public_sg.id]
   associate_public_ip_address = true
+  #user_data = templatefile("copy.sh",{KEY="~/.ssh/devc"})
+  provisioner "file" {
+    source      = "jumpbox.pem"
+    destination = "/tmp/jumpbox.pem"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      host        = aws_instance.public_instance.public_ip
+      private_key = file("~/.ssh/devc")
+    }
+  }
 }
+
+
 
 resource "aws_security_group" "public_sg" {
   name        = "DevC Public SG"
@@ -128,8 +142,9 @@ resource "aws_security_group" "public_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["129.205.124.229/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
 }
 
 
