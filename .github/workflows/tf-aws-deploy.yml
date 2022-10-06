@@ -6,6 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ${PWD}/terraform_install.sh
+      - run: .github/workflows/terraform_install.sh
       - run: cd ~/ && terraform init && terraform apply -auto-approve
      
