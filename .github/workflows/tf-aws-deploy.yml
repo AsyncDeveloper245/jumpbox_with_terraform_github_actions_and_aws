@@ -31,7 +31,7 @@ jobs:
         run: terraform apply -auto-approve -input=false
 
       - name: Get Public IP
-        run: echo $(terraform output PublicIP) >> $PublicIP
+        run: echo $(terraform output PublicIp) >> $PublicIP
         
 
       - name: Post to a Slack channel
