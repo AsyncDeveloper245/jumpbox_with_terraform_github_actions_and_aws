@@ -2,7 +2,7 @@ name: Jumpbox Infrastructure
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-  check-bats-version:
+  deploy-jumpbox:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
         run: terraform apply -auto-approve -input=false
 
       - name: Get Public IP
-        run: echo $(terraform output PublicIp) >> $PublicIP
+        run: echo "PublicIP=$(terraform output PublicIp)" >> $GITHUB_ENV
         
 
       - name: Post to a Slack channel
