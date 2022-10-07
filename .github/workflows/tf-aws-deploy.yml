@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: Jumpbox Infrastructure
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
@@ -36,7 +36,6 @@ jobs:
 
       - name: Post to a Slack channel
         if: steps.build.outcome == 'success'
-      - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.22.0
         with:
