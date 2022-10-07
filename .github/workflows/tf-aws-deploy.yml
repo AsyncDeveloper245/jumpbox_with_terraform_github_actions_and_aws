@@ -36,16 +36,16 @@ jobs:
 
       - name: Post to a Slack channel
         if: steps.build.outcome == 'success'
-        - name: Post to a Slack channel
-          id: slack
-          uses: slackapi/slack-github-action@v1.22.0
-          with:
-            # Slack channel id, channel name, or user id to post message.
-            # See also: https://api.slack.com/methods/chat.postMessage#channels
-            # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-            channel-id: 'C03K7PLT90V'
-            # For posting a simple plain text message
-            slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n The Public IP for the Public EC2 Server: $PublicIP"
-          env:
-            SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-             
+      - name: Post to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.22.0
+        with:
+          # Slack channel id, channel name, or user id to post message.
+          # See also: https://api.slack.com/methods/chat.postMessage#channels
+          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+          channel-id: 'C03K7PLT90V'
+          # For posting a simple plain text message
+          slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n The Public IP for the Public EC2 Server: $PublicIP"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            
