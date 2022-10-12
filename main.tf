@@ -118,17 +118,7 @@ resource "aws_instance" "public_instance" {
   key_name                    = aws_key_pair.devc_auth.id
   vpc_security_group_ids      = [aws_security_group.public_sg.id]
   associate_public_ip_address = true
-  #user_data = templatefile("copy.sh",{KEY="~/.ssh/devc"})
-  # provisioner "file" {
-  #   source      = "jumpbox.pem"
-  #   destination = "/tmp/jumpbox.pem"
 
-  #   connection {
-  #     type        = "ssh"
-  #     user        = "ubuntu"
-  #     host        = aws_instance.public_instance.public_ip
-  #     private_key = file("devc.pem")
-  #   }
   }
 
 
