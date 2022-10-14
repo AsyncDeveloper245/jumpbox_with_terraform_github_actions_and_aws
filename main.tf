@@ -18,6 +18,13 @@ Resources to Create
 
 */
 
+terraform {
+  backend "s3" {
+    bucket = "tf-actions"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
+}
 
 
 resource "aws_vpc" "devcloud" {
