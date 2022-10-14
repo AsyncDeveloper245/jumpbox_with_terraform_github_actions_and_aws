@@ -32,6 +32,10 @@ jobs:
 
       - name: Get Public IP
         run: echo "PublicIP=$(terraform output PublicIp)" >> $GITHUB_ENV
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.REGION }}  
         
 
       - name: Post to a Slack channel
@@ -52,6 +56,10 @@ jobs:
         run: sleep 500
 
       - name: Destroy Infrastructure
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -input=false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.REGION }}  
 
             
