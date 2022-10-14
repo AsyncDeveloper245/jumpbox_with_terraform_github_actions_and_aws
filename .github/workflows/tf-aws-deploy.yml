@@ -48,8 +48,10 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: Destroy infrastructure
+      - name: Wait for 5 minutes
         run: sleep 500
+
+      - name: Destroy Infrastructure
         run: terraform destroy -auto-approve
 
             
