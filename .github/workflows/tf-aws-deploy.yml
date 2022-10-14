@@ -1,5 +1,5 @@
 name: Jumpbox Infrastructure
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} Just pushed a new Version
 on: [push]
 jobs:
   deploy-jumpbox:
