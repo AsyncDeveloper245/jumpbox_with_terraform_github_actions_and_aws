@@ -125,6 +125,7 @@ resource "aws_instance" "public_instance" {
   key_name                    = aws_key_pair.devc_auth.id
   vpc_security_group_ids      = [aws_security_group.public_sg.id]
   associate_public_ip_address = true
+  iam_instance_profile = "AllowJumpBox"
 
   }
 
